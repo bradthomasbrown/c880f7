@@ -22,5 +22,5 @@ git clone https://github.com/bradthomasbrown/c880f7
 ```sh
 cd c880f7
 bun src/c880f7.ts targetDir # where 'targetDir/src/<something>.abi' exists
-# creates module at 'targetDir\dist'
+# creates module at 'targetDir/dist'
 ```
