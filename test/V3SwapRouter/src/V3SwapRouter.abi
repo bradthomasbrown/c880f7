@@ -1,0 +1,48 @@
+[
+    {
+        "inputs": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "name": "amountOutMin",
+                "type": "uint256"
+            },
+            {
+                "name": "path",
+                "type": "bytes"
+            },
+            {
+                "name": "payerIsUser",
+                "type": "bool"
+            }
+        ],
+        "outputs": [],
+        "name": "v3SwapExactInput",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amountMin",
+                "type": "uint256"
+            }
+        ],
+        "outputs": [],
+        "name": "sweep",
+        "type": "function"
+    }
+]

@@ -1,0 +1,10 @@
+export { default as allowance } from "./decode/allowance";
+export { default as approve } from "./decode/approve";
+export { default as balanceOf } from "./decode/balanceOf";
+export { default as decimals } from "./decode/decimals";
+export { default as mint } from "./decode/mint";
+export { default as name } from "./decode/name";
+export { default as symbol } from "./decode/symbol";
+export { default as totalSupply } from "./decode/totalSupply";
+export { default as transfer } from "./decode/transfer";
+export { default as transferFrom } from "./decode/transferFrom";

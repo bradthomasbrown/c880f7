@@ -1,0 +1,15 @@
+have to strip out and clean the lib
+we do want to handle overloads or attempt to try that
+ handling them and dealing with them now is manual and tedious and goofy
+we need to actually deal with the abi library/repository first
+ we'll want it to then reference the abi library more directly
+ it'll be weird
+ you use this to build a module
+ but the module won't work unless you've also installed our abi library
+ sounds kinda gross, but i don't see a nice way around that
+ maybe ask claude what it thinks, there might be some idea or concept or mechanism we don't know about
+ --
+ it suggested we do exactly what we are already doing
+ okay
+
+an example.ts or examples/ is not a bad idea to have in a TS package

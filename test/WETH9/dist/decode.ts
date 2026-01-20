@@ -1,0 +1,11 @@
+export { default as name } from "./decode/name";
+export { default as approve } from "./decode/approve";
+export { default as totalSupply } from "./decode/totalSupply";
+export { default as transferFrom } from "./decode/transferFrom";
+export { default as withdraw } from "./decode/withdraw";
+export { default as decimals } from "./decode/decimals";
+export { default as balanceOf } from "./decode/balanceOf";
+export { default as symbol } from "./decode/symbol";
+export { default as transfer } from "./decode/transfer";
+export { default as deposit } from "./decode/deposit";
+export { default as allowance } from "./decode/allowance";
