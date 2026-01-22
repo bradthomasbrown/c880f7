@@ -21,6 +21,14 @@ git clone https://github.com/bradthomasbrown/c880f7
 ## Usage
 ```sh
 cd c880f7
-bun src/c880f7.ts targetDir # where 'targetDir/src/<something>.abi' exists
+
+bun src/c880f7.ts targetDir
+# where 'targetDir/src/<something>.abi' exists
 # creates module at 'targetDir/dist'
+
+bun src/425a07.ts targetDir add featureName featureTemplatePath
+# where 'targetDir' is a compiled ABI module with a populated 'dist' folder (with 'encode' and 'decode' folders)
+# creates module <featureName> at 'targetDir/dist/<featureName>/<featureName>.ts'
+# which is a similar to the 'encode' or 'decode' in that it exports one of each smart contract function
+# but applies the code at <featureTemplatePath>
 ```
