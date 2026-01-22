@@ -12,6 +12,7 @@ function solTypeToJsType(type:string, components:any):ts.TypeNode {
         else return ts.factory.createTypeReferenceNode("Array", [solTypeToJsType(_8c_[1], components)]);
     }
     if (type == "tuple") {
+        if (components.length == 0) return ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword);
         if (components.every((e:any) => "name" in e && typeof e.name == "string" && e.name != "")) {
             return ts.factory.createTypeLiteralNode(components.map((e:any) => 
                 ts.factory.createPropertySignature(
