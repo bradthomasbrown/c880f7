@@ -107,6 +107,39 @@ function add655c97Map(
     );
 }
 
+function addEncodeParameterOverloadsType(
+    statements:Array<ts.Statement>,
+    _2c_:Set<any>
+) {
+    const tupleElements:Parameters<typeof ts["factory"]["createTupleTypeNode"]>[0] = [];
+    let i = 0; for (const _98_ of _2c_) {
+        (tupleElements as any).push(ts.factory.createTupleTypeNode([
+            ts.factory.createNamedTupleMember(
+                undefined,
+                ts.factory.createIdentifier("overload"),
+                undefined,
+                ts.factory.createLiteralTypeNode(ts.factory.createNumericLiteral(i))
+            ),
+            ..._98_.inputs.map((input:any, i:number) =>
+                ts.factory.createParameterDeclaration(
+                    undefined,
+                    undefined,
+                    !input.name ? `param${i}` : input.name,
+                    undefined,
+                    solTypeToJsType(input.type, input.components),
+                    undefined
+                )
+            )
+        ]));
+    }
+    statements.push(ts.factory.createTypeAliasDeclaration(
+        undefined,
+        "ParameterOverloads",
+        undefined,
+        ts.factory.createTupleTypeNode(tupleElements)
+    ));
+}
+
 function addEncodeOverloadDeclarations(
     statements:Array<ts.Statement>,
     name:string,
@@ -128,21 +161,14 @@ function addEncodeOverloadDeclarations(
                 ),
                 ts.factory.createParameterDeclaration(
                     undefined,
+                    ts.factory.createToken(ts.SyntaxKind.DotDotDotToken),
+                    "parameters",
                     undefined,
-                    "overload",
-                    undefined,
-                    ts.factory.createLiteralTypeNode(ts.factory.createNumericLiteral(i)),
+                    ts.factory.createIndexedAccessTypeNode(
+                        ts.factory.createTypeReferenceNode("ParameterOverloads", undefined),
+                        ts.factory.createLiteralTypeNode(ts.factory.createNumericLiteral(i))
+                    ),
                     undefined
-                ),
-                ..._57_.inputs.map((input:any, i:number) =>
-                    ts.factory.createParameterDeclaration(
-                        undefined,
-                        undefined,
-                        !input.name ? `param${i}` : input.name,
-                        undefined,
-                        solTypeToJsType(input.type, input.components),
-                        undefined
-                    )
                 )
             ],
             ts.factory.createTypeReferenceNode("ArrayBuffer"),
@@ -217,6 +243,38 @@ function addEncodeFunctionImplementation(
     ));
 }
 
+function addEncodeParameterOverloadsExport(
+    statements:Array<ts.Statement>
+) {
+    statements.push(ts.factory.createExportDeclaration(
+        undefined,
+        true,
+        ts.factory.createNamedExports([
+            ts.factory.createExportSpecifier(
+                false,
+                undefined,
+                "ParameterOverloads"
+            )
+        ]),
+        undefined,
+        undefined
+    ));
+}
+
+function addDecodeReturnOverloadsType(
+    statements:Array<ts.Statement>,
+    _39_:Set<any>
+) {
+    const tupleElements:Parameters<typeof ts["factory"]["createTupleTypeNode"]>[0] = [];
+    for (const _28_ of _39_) (tupleElements as any).push( solTypeToJsType("tuple", _28_.outputs));
+    statements.push(ts.factory.createTypeAliasDeclaration(
+        undefined,
+        "ReturnOverloads",
+        undefined,
+        ts.factory.createTupleTypeNode(tupleElements)
+    ));
+}
+
 function addDecodeOverloadDeclarations(
     statements:Array<ts.Statement>,
     name:string,
@@ -246,7 +304,10 @@ function addDecodeOverloadDeclarations(
                     undefined
                 )
             ],
-            solTypeToJsType("tuple", _b8_.outputs),
+            ts.factory.createIndexedAccessTypeNode(
+                ts.factory.createTypeReferenceNode("ReturnOverloads", undefined),
+                ts.factory.createLiteralTypeNode(ts.factory.createNumericLiteral(i))
+            ),
             undefined
         ));
         i++;
@@ -289,15 +350,35 @@ function addDecodeFunctionImplementation(
                     undefined,
                     [
                         ts.factory.createIdentifier("buffer"),
-                        ts.factory.createCallExpression(
-                            ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("_ce_"), "get"),
-                            undefined,
-                            [ts.factory.createIdentifier("overload")]
-                        ),
+                        ts.factory.createNonNullExpression(
+                            ts.factory.createCallExpression(
+                                ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("_ce_"), "get"),
+                                undefined,
+                                [ts.factory.createIdentifier("overload")]
+                            )
+                        )
                     ]
                 )
             )
         ], true)
+    ));
+}
+
+function addDecodeReturnOverloadsExport(
+    statements:Array<ts.Statement>
+) {
+    statements.push(ts.factory.createExportDeclaration(
+        undefined,
+        true,
+        ts.factory.createNamedExports([
+            ts.factory.createExportSpecifier(
+                false,
+                undefined,
+                "ReturnOverloads"
+            )
+        ]),
+        undefined,
+        undefined
     ));
 }
 
@@ -329,7 +410,7 @@ async function write(
 
 const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
 const { name:contractName, path:abiPath } = abis.at(0)!;
-const modulePath = `${distDirPath}/${contractName}.ts`;
+const modulePath = `${distDirPath}/abi.ts`;
 const encodeDirPath = `${distDirPath}/encode`;
 const decodeDirPath = `${distDirPath}/decode`;
 const encodeBarrelPath = `${distDirPath}/encode.ts`;
@@ -366,13 +447,17 @@ for (const [name, _42_] of _83_) {
     const fnDecodeStatements:ts.Statement[] = [];
     addImportToFunctionFile(fnEncodeStatements, "encode");
     add655c97Map(fnEncodeStatements, _42_, "inputs");
+    addEncodeParameterOverloadsType(fnEncodeStatements, _42_);
     addEncodeOverloadDeclarations(fnEncodeStatements, name, _42_);
     addEncodeFunctionImplementation(fnEncodeStatements, name, _42_);
+    addEncodeParameterOverloadsExport(fnEncodeStatements);
     await write(fnEncodePath, fnEncodeStatements);
     addImportToFunctionFile(fnDecodeStatements, "decode");
     add655c97Map(fnDecodeStatements, _42_, "outputs");
+    addDecodeReturnOverloadsType(fnDecodeStatements, _42_);
     addDecodeOverloadDeclarations(fnDecodeStatements, name, _42_);
     addDecodeFunctionImplementation(fnDecodeStatements, name, _42_);
+    addDecodeReturnOverloadsExport(fnDecodeStatements);
     await write(fnDecodePath, fnDecodeStatements);
 }
 
