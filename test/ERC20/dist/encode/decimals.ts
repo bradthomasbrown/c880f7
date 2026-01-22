@@ -1,7 +1,8 @@
-import { encode, _655c97_, _869645_ } from "../../../../../abi/test/test";
-const _df_ = JSON.parse("{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}");
-const _7b_ = _655c97_(_df_, "inputs");
-export default function (): ArrayBuffer {
-    const _15_ = _869645_(_7b_);
-    return encode(_15_);
+import { encode, _655c97_, _869645_ } from "@bradthomasbrown/abi";
+const _ce_ = new Map([
+    [0, _655c97_(JSON.parse("{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}"), "inputs")]
+]);
+export default function decimals(includeSelector: boolean, overload: 0): ArrayBuffer;
+export default function decimals(includeSelector: boolean, overload: number, ...parameters: any): ArrayBuffer {
+    return encode(includeSelector, _869645_(_ce_.get(overload)!, parameters), parameters);
 }
