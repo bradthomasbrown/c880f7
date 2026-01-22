@@ -22,7 +22,6 @@ for (const entry of await readdir(srcDirPath)) {
 }
 if (abis.length == 0) throw new Error("no abi found in src dir");
 if (abis.length > 1) throw new Error("more than one abi found in src dir (multiple currently not supported");
-const encodeDirPath = `${distDirPath}/encode`;
 let distDirExists = false as boolean;
 for (const entry of await readdir(targetPath)) {
     const stats = await stat(`${targetPath}/${entry}`);
